@@ -75,7 +75,7 @@ class RelationshipInlineFormset(BaseInlineFormSet):
             # таким образом объект не будет сохранен,
             # а пользователю выведется соответствующее сообщение об ошибке
             raise ValidationError('Тут всегда ошибка')
-        return super().clean()  # вызываем базовый код переопределяемого метода
+        return super().clean  # вызываем базовый код переопределяемого метода
 
 
 class RelationshipInline(admin.TabularInline):
