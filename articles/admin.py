@@ -4,8 +4,8 @@ from django.forms import BaseInlineFormSet
 
 from .models import Article, Tag, Scope
 
+
 class ScopeInlineFormset(BaseInlineFormSet):
-    @property
     def clean(self):
         count = 0
         for form in self.forms:
@@ -16,18 +16,22 @@ class ScopeInlineFormset(BaseInlineFormSet):
             # вызовом исключения ValidationError можно указать админке о наличие ошибки
             # таким образом объект не будет сохранен,
             # а пользователю выведется соответствующее сообщение об ошибке
-            if count != 1:
-                raise ValidationError('Тут всегда ошибка')
+        if count != 1:
+            raise ValidationError('Тут всегда ошибка')
         return super().clean  # вызываем базовый код переопределяемого метода
+
+
 class ScopeInline(admin.TabularInline):
     model = Scope
-    extra = 3
+    extra = 0
     formset = ScopeInlineFormset
+
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ['title', 'text', 'published_at', 'image']
     inlines = [ScopeInline]
+
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
